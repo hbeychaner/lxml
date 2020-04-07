@@ -758,7 +758,10 @@ _looks_like_full_html_bytes = re.compile(
 def document_fromstring(html, parser=None, ensure_head_body=False, **kw):
     if parser is None:
         parser = html_parser
-    value = etree.fromstring(html, parser, **kw)
+    try:
+        value = etree.fromstring(html, parser, **kw)
+    except:
+        value = etree.fromstring(html.encode('utf-8'), parser, **kw)
     if value is None:
         raise etree.ParserError(
             "Document is empty")
